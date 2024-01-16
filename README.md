@@ -12,25 +12,74 @@ Requirements
 
 Access [gradle Installation link](https://gradle.org/install/#manually) for more details.
 
+Role Structure
+--------------
+
+```shell
+roles/ansible-gradle
+├── defaults
+│   └── main.yml
+├── files
+├── handlers
+│   └── main.yml
+├── LICENSE
+├── meta
+│   └── main.yml
+├── README.md
+├── tasks
+│   ├── java_home.yml
+│   └── main.yml
+├── templates
+│   └── gradle_home.sh.j2
+├── tests
+│   ├── inventory
+│   └── test.yml
+└── vars
+    └── main.yml
+
+8 directories, 11 files
+
+```
+
 Role Variables
 --------------
 
-TODO
+- defaults
+### Example
+```yaml
+gradle_home_path: "/opt/gradle"
+gradle_profile: "/etc/profile.d/gradle.sh"
+```
+
+- vars
+### Example
+```yaml
+gradle_version: "8.5"
+java_home_path: "/usr/local/java/jdk-17.0.9"
+```
 
 Dependencies
 ------------
 
-TODO
+Java should be installed. Check you system using the following command:
+
+```shell
+java -version
+```
+
+If you prefer, feel free to use my role [ansible-oracle-java](https://github.com/alexmbarbosa/ansible-oracle-java)
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+An example of how to use your role:
 
-    - hosts: jenkins
-      become: yes
-      roles:
-         - ansible-gradle
+```yml
+- hosts: nodes
+  become: yes
+  roles:
+    - ansible-gradle
+```
 
 License
 -------

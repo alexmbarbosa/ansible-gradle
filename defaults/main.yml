@@ -1,4 +1,4 @@
 ---
 # defaults file for ansible-gradle
-gradle_version: "8.5"
 gradle_home_path: "/opt/gradle"
+gradle_profile: "/etc/profile.d/gradle.sh"

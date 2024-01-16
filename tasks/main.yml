@@ -2,7 +2,6 @@
 - name: Include tasks from java_home.yml
   include_tasks: java_home.yml
 
-# tasks file for ansible-gradle
 - name: Create Gradle installation directory
   file:
     path: "{{ gradle_home_path }}"
@@ -26,15 +25,9 @@
     mode: '0755'
   tags: [ extract_gradle ]
 
-- name: Set Gradle environment variables
-  lineinfile:
-    dest: "{{ gradle_profile }}"
-    line: |
-      export GRADLE_HOME="{{ gradle_home_path }}/gradle-{{ gradle_version }}"
-      export PATH=$PATH:$GRADLE_HOME/bin
-      export JAVA_HOME="{{ java_home_path }}"
-  notify: Reload shell profile
-
-- name: Notify handler to reload shell profile
-  meta: end_handlers
-  
+- name: Set GRADLE_HOME environment.
+  template:
+    src: gradle_home.sh.j2
+    dest: /etc/profile.d/gradle_home.sh
+    mode: 0644
+  tags: [ gradle_env ]
