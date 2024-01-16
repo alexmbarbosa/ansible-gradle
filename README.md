@@ -44,15 +44,15 @@ roles/ansible-gradle
 Role Variables
 --------------
 
-- defaults
-### Example
+## defaults
+#### Example
 ```yaml
 gradle_home_path: "/opt/gradle"
 gradle_profile: "/etc/profile.d/gradle.sh"
 ```
 
-- vars
-### Example
+## vars
+#### Example
 ```yaml
 gradle_version: "8.5"
 java_home_path: "/usr/local/java/jdk-17.0.9"
