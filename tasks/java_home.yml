@@ -1,0 +1,9 @@
+# Handle with the $JAVA_HOME capture
+---
+- name: Capture JAVA_HOME value
+  command: "echo $JAVA_HOME"
+  register: java_home_output
+
+- name: Set java_home_path variable
+  set_fact:
+    java_home_path: "{{ java_home_output.stdout_lines | first | default(java_home_path) }}"

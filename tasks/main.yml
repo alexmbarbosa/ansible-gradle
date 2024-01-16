@@ -1,0 +1,33 @@
+---
+- name: Include tasks from java_home.yml
+  include_tasks: java_home.yml
+
+- name: Create Gradle installation directory
+  file:
+    path: "{{ gradle_home_path }}"
+    state: directory
+    mode: '0755'
+  tags: [ create_directory ]
+
+- name: Download Gradle
+  get_url:
+    url: "https://services.gradle.org/distributions/gradle-{{ gradle_version }}-all.zip"
+    dest: "{{ gradle_home_path }}/gradle-{{ gradle_version }}-all.zip"
+    mode: '0644'
+  tags: [ download_gradle ]
+
+- name: Extract Gradle
+  unarchive:
+    src: "{{ gradle_home_path }}/gradle-{{ gradle_version }}-all.zip"
+    dest: "{{ gradle_home_path }}"
+    remote_src: yes
+    creates: "{{ gradle_home_path }}/gradle-{{ gradle_version }}"
+    mode: '0755'
+  tags: [ extract_gradle ]
+
+- name: Set GRADLE_HOME environment.
+  template:
+    src: gradle_home.sh.j2
+    dest: /etc/profile.d/gradle_home.sh
+    mode: 0644
+  tags: [ gradle_env ]
