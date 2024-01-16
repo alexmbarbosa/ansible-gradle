@@ -1,0 +1,40 @@
+---
+- name: Include tasks from java_home.yml
+  include_tasks: java_home.yml
+
+# tasks file for ansible-gradle
+- name: Create Gradle installation directory
+  file:
+    path: "{{ gradle_home_path }}"
+    state: directory
+    mode: '0755'
+  tags: [ create_directory ]
+
+- name: Download Gradle
+  get_url:
+    url: "https://services.gradle.org/distributions/gradle-{{ gradle_version }}-all.zip"
+    dest: "{{ gradle_home_path }}/gradle-{{ gradle_version }}-all.zip"
+    mode: '0644'
+  tags: [ download_gradle ]
+
+- name: Extract Gradle
+  unarchive:
+    src: "{{ gradle_home_path }}/gradle-{{ gradle_version }}-all.zip"
+    dest: "{{ gradle_home_path }}"
+    remote_src: yes
+    creates: "{{ gradle_home_path }}/gradle-{{ gradle_version }}"
+    mode: '0755'
+  tags: [ extract_gradle ]
+
+- name: Set Gradle environment variables
+  lineinfile:
+    dest: "{{ gradle_profile }}"
+    line: |
+      export GRADLE_HOME="{{ gradle_home_path }}/gradle-{{ gradle_version }}"
+      export PATH=$PATH:$GRADLE_HOME/bin
+      export JAVA_HOME="{{ java_home_path }}"
+  notify: Reload shell profile
+
+- name: Notify handler to reload shell profile
+  meta: end_handlers
+  

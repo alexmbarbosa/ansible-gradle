@@ -1,0 +1,4 @@
+---
+# vars file for ansible-gradle
+java_home_path: "/usr/local/java/jdk-17.0.9"
+gradle_profile: "/etc/profile.d/gradle.sh"
